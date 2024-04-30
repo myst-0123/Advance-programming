@@ -1,0 +1,15 @@
+第2回課題
+課題
+・チームで協力して、GoFのデザインパターンの内、8個の
+サンプルを調べて作ること。ただし、プログラム中のコメ
+ントで、その解説を書くこと。
+・Abstract Factory, Factory Method, Singleton, Adapter,
+Bridge, Composite, Decorator, Facade, Observer, Strategy,
+Template Method, Singleton, Iteratorのうち、８つを推奨
+・参考(ここに限らずwebで探すこと)
+・http://www.techscore.com/tech/DesignPattern/index.html
+/
+・ただし、大学や大学生活に関係しているクラスを考えて
+作ること
+
+< ここにコード >

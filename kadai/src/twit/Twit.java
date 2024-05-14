@@ -1,4 +1,4 @@
-package Twit;
+package twit;
 
 import java.sql.PreparedStatement;
 import java.util.Scanner;

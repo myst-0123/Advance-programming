@@ -3,6 +3,7 @@ package delete;
 import java.sql.PreparedStatement;
 import java.sql.ResultSet;
 import java.util.Scanner;
+import dbmabager.DBManager;
 
 public class Delete {
     private static Delete singletonDelete = new Delete();
@@ -19,7 +20,7 @@ public class Delete {
         System.out.print("削除するtwitのidを入力してください：");
         int deleteId = scan.nextInt(); //削除twitのid
 
-        DBManager.delete(name, deleteId); //DB操作
+        getInstance().delete(name, deleteId); //DB操作
 
         scan.close();
     }

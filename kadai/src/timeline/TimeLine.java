@@ -3,7 +3,7 @@ package timeline;
 import java.util.*;
 import java.sql.*;
 
-import DBManager.*;
+import dbmanager.*;
 
 public class TimeLine {
 

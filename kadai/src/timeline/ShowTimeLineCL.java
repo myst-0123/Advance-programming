@@ -3,7 +3,7 @@ package timeline;
 import java.util.Timer;
 import java.util.TimerTask;
 
-import DBManager.*;
+import dbmanager.*;
 
 // コマンドラインでTwitを表示させる
 public class ShowTimeLineCL {

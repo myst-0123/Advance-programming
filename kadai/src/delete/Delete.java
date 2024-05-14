@@ -20,7 +20,7 @@ public class Delete {
         System.out.print("削除するtwitのidを入力してください：");
         int deleteId = scan.nextInt(); //削除twitのid
 
-        getInstance().delete(name, deleteId); //DB操作
+        (DBManager.getInstance()).delete(name, deleteId); //DB操作
 
         scan.close();
     }

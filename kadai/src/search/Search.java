@@ -19,9 +19,8 @@ public class Search {
         Scanner scan = new Scanner(System.in); // 入力用Scannerクラス
 
         System.out.print("検索する言葉を入力してください：");
-        String word = scan.next(); // 削除twitのid
-        DBManager db = DBManager.getInstance();
-        db.getTwit(word); // DB操作
+        String word = scan.next(); // 検索word
+        DBManager.getInstance().getTwit(word); // DB操作
 
         scan.close();
     }

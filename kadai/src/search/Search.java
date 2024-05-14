@@ -1,8 +1,9 @@
 package search;
 
 import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Scanner;
+
+import DBManager.DBManager;
 
 public class Search {
     private static Search singletonSearch = new Search();
@@ -19,8 +20,8 @@ public class Search {
 
         System.out.print("検索する言葉を入力してください：");
         String word = scan.next(); // 削除twitのid
-
-        DBManager.getTwit(word); // DB操作
+        DBManager db = DBManager.getInstance();
+        db.getTwit(word); // DB操作
 
         scan.close();
     }

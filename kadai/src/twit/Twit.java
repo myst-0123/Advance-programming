@@ -19,7 +19,7 @@ public class Twit {
         System.out.print("twitの内容を入力してください：");
         String content = scan.next(); //twit内容
 
-        (DBManager.getInstance()).Twit(name, content); //DB操作
+        (DBManager.getInstance()).twit(name, content); //DB操作
 
         scan.close();
     }

@@ -5,27 +5,27 @@ import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 
 public class DBTest {
-    public void insert() {
+    public void insert(String name, String message) {
         try {
             Class.forName("org.sqlite.JDBC");
             Connection con = null;
             con = DriverManager.getConnection("jdbc:sqlite:test.db");
 
             PreparedStatement pstmt = con
-                    .prepareStatement("insert into message(id,name,content,create_at) VALUES(?,?,?,?)");
-            //pstmt.setInt(1, 2);
-            pstmt.setString(2, "Ken");
-            pstmt.setString(3, "こんにちは");
+                    .prepareStatement("insert into message(id,name,content,create_at) VALUES(?,?,?)");
+            // pstmt.setInt(1, 2);
+            pstmt.setString(1, name);
+            pstmt.setString(2, message);
             // 現在日時を取得
             LocalDateTime nowDate = LocalDateTime.now();
             System.out.println(nowDate); // 2020-12-20T13:32:48
 
             // 表示形
-            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");// ①
+            DateTimeFormatter dtf1 = DateTimeFormatter.ofPattern("yyyy/MM/dd HH:mm");
             String formatNowDate = dtf1.format(nowDate);
             System.out.println(formatNowDate); // 2020/12/20 13:32:48.293
 
-            pstmt.setString(4, formatNowDate);
+            pstmt.setString(3, formatNowDate);
             pstmt.executeUpdate();
 
             pstmt.close();

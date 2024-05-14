@@ -3,6 +3,8 @@ package timeline;
 import java.util.Timer;
 import java.util.TimerTask;
 
+import DBManager.*;
+
 // コマンドラインでTwitを表示させる
 public class ShowTimeLineCL {
     private TimeLine tl;
@@ -33,9 +35,20 @@ public class ShowTimeLineCL {
     // TimeLineの表示
     public void ShowTimeLine() {
         // Twitsの取得
-        ArrayList<TwitCapsule> tl_list = tl.updateTL();
+        List<Twit> tl_list = tl.updateTL();
 
+        if(tl_list == null) {
+            System.out.println("ERROR : Twitを読み込めません")
+            return null;
+        }
 
+        // Twitsを表示
+        for(Twit tw : tl_list) {
+            System.out.println("------------------------------------------------------------------");
+            System.out.println(tw.name);
+            System.out.println(tw.createdAt);
+            System.out.println(tw.content);
+        }
     }
 
     // TimeLineの更新の停止

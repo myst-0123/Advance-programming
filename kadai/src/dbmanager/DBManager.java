@@ -12,6 +12,8 @@ public class DBManager {
         return dbManager;
     }
 
+
+    // クエリ結果の整形
     private List<Twit> ParseResult(ResultSet rs) {
         List<Twit> twitList = new ArrayList<Twit>();
         try {
@@ -28,23 +30,28 @@ public class DBManager {
         return twitList;
     }
 
+    // ツイットの作成
     public void Twit(String name, String content) {
         Connection con = null;
+
+        // 作成日時の取得とフォーマットの整形
         Date date = new Date();
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
         String createdAt = sdf.format(date);
+
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
             PreparedStatement pstmt = con.prepareStatement("insert into twit(name, content) values(?, ?, ?)");
             pstmt.setString(1, name); //nameカラムに第1引数をセット
             pstmt.setString(2, content); //contentカラムに第2引数をセット
-            pstmt.setString(3, createdAt);
+            pstmt.setString(3, createdAt); //作成日時をセット
             pstmt.executeUpdate(); //テーブル更新
             pstmt.close();
         } catch (Exception e) {e.printStackTrace();} 
     } 
 
+    // データの取得
     public List<Twit> getTwit() {
         Connection con = null;
         ResultSet rs = null;
@@ -66,6 +73,7 @@ public class DBManager {
         return ParseResult(rs);
     }
 
+    // 単語検索ありのデータの取得
     public List<Twit> getTwit(String searchWord) {
         Connection con = null;
         ResultSet rs = null;
@@ -87,6 +95,7 @@ public class DBManager {
         return ParseResult(rs);
     }
 
+    // ツイットの削除
     public void delete(String name, int deleteId) {
         Connection con = null;
         try {

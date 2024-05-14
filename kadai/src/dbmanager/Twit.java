@@ -1,5 +1,6 @@
 package dbmanager;
 
+// ツイットのデータ
 public class Twit {
     public int id;
     public String name;

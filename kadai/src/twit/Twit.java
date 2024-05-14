@@ -2,6 +2,7 @@ package twit;
 
 import java.sql.PreparedStatement;
 import java.util.Scanner;
+import dbmabager.DBManager;
 
 public class Twit {
     private static Twit singletonTwit = new Twit();
@@ -18,7 +19,7 @@ public class Twit {
         System.out.print("twitの内容を入力してください：");
         String content = scan.next(); //twit内容
 
-        DBManager.twit(name, content); //DB操作
+        getInstance().Twit(name, content); //DB操作
 
         scan.close();
     }

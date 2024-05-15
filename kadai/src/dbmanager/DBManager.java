@@ -7,11 +7,13 @@ import java.text.SimpleDateFormat;
 
 public class DBManager {
     private static DBManager dbManager = new DBManager();
-    private DBManager() { }
+
+    private DBManager() {
+    }
+
     public static DBManager getInstance() {
         return dbManager;
     }
-
 
     // クエリ結果の整形
     private List<Twit> ParseResult(ResultSet rs) {
@@ -25,7 +27,10 @@ public class DBManager {
                 Twit twit = new Twit(id, name, content, createdAt);
                 twitList.add(twit);
             }
-        } catch (Exception e) {e.printStackTrace(); return null;}
+        } catch (Exception e) {
+            e.printStackTrace();
+            return null;
+        }
 
         return twitList;
     }
@@ -43,13 +48,15 @@ public class DBManager {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
             PreparedStatement pstmt = con.prepareStatement("insert into twit(name, content) values(?, ?, ?)");
-            pstmt.setString(1, name); //nameカラムに第1引数をセット
-            pstmt.setString(2, content); //contentカラムに第2引数をセット
-            pstmt.setString(3, createdAt); //作成日時をセット
-            pstmt.executeUpdate(); //テーブル更新
+            pstmt.setString(1, name); // nameカラムに第1引数をセット
+            pstmt.setString(2, content); // contentカラムに第2引数をセット
+            pstmt.setString(3, createdAt); // 作成日時をセット
+            pstmt.executeUpdate(); // テーブル更新
             pstmt.close();
-        } catch (Exception e) {e.printStackTrace();} 
-    } 
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
 
     // データの取得
     public List<Twit> getTwit() {
@@ -59,7 +66,7 @@ public class DBManager {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
             String sql = "SELECT * FROM twit ORDER BY created_at desc";
-            PreparedStatement pStmt = con.prepareStatement(sql); 
+            PreparedStatement pStmt = con.prepareStatement(sql);
 
             rs = pStmt.executeQuery();
 
@@ -80,8 +87,9 @@ public class DBManager {
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
-            
-            PreparedStatement pStmt = con.prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
+
+            PreparedStatement pStmt = con
+                    .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
             pStmt.setString(1, searchWord);
 
             rs = pStmt.executeQuery();
@@ -102,22 +110,74 @@ public class DBManager {
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
             PreparedStatement pstmt1 = con.prepareStatement("select * from twit where id = ?");
             pstmt1.setInt(1, deleteId);
-            ResultSet rs = pstmt1.executeQuery(); //deleteId番目のtwitを参照
-            while(rs.next()){
-                if((rs.getString("name")).equals(name)){ //deleteId番目のtwitのnameとプログラム実行者のアカウント名が一致していれば
+            ResultSet rs = pstmt1.executeQuery(); // deleteId番目のtwitを参照
+            while (rs.next()) {
+                if ((rs.getString("name")).equals(name)) { // deleteId番目のtwitのnameとプログラム実行者のアカウント名が一致していれば
                     PreparedStatement pstmt2 = con.prepareStatement("delete from twit where id = ?");
-                    pstmt2.setInt(1, deleteId); //idがdeleteIdのtwitを
-                    pstmt2.executeUpdate(); //削除
+                    pstmt2.setInt(1, deleteId); // idがdeleteIdのtwitを
+                    pstmt2.executeUpdate(); // 削除
                     pstmt2.close();
-                }else{
+                } else {
                     System.out.println("！そのtwitはあなたのものではありません！");
                 }
             }
-            
+
             rs.close();
             pstmt1.close();
-        } catch (Exception e) {e.printStackTrace();}
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // アカウント新規作成
+    public void signin(String name, String password) {
+        Connection con = null;
+
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
+            ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
+            while (rs.next()) {
+                if ((rs.getString("name")).equals(name)) { // passwordが一致するアカウントのnameとプログラム実行者のアカウント名が一致していれば
+                    PreparedStatement pstmt2 = con.prepareStatement("insert into account(name, password) values(?, ?)");
+                    pstmt2.setString(1, name); // nameカラムに第1引数をセット
+                    pstmt2.setString(2, password); // passwordカラムに第2引数をセット
+                    pstmt2.executeUpdate(); // テーブル更新
+                    pstmt2.close();
+                } else {
+                    System.out.println("！既に同じアカウントが存在しています！");
+                }
+            }
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    // ログイン
+    public boolean login(String name, String password) {
+        Connection con = null;
+        ResultSet rs = null;
+        try {
+            Class.forName("org.sqlite.JDBC");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            PreparedStatement pStmt = con
+                    .prepareStatement("SELECT * FROM account WHERE password LIKE '?'");
+            pStmt.setString(1, password);
+
+            rs = pStmt.executeQuery();
+
+            pStmt.close();
+            con.close();
+            while (rs.next()) {
+                if (name == rs.getString("name") && password == rs.getString("password"))
+                    return true;
+            }
+            return false;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return false;
+        }
     }
 }
-
-

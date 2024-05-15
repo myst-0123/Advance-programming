@@ -135,21 +135,25 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
+            pstmt1.setString(1, password);
             ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
             while (rs.next()) {
                 if ((rs.getString("name")).equals(name)) { // passwordが一致するアカウントのnameとプログラム実行者のアカウント名が一致していれば
-                    PreparedStatement pstmt2 = con.prepareStatement("insert into account(name, password) values(?, ?)");
-                    pstmt2.setString(1, name); // nameカラムに第1引数をセット
-                    pstmt2.setString(2, password); // passwordカラムに第2引数をセット
-                    pstmt2.executeUpdate(); // テーブル更新
-                    pstmt2.close();
-                } else {
                     System.out.println("！既に同じアカウントが存在しています！");
+                    pstmt1.close();
+                    return;
                 }
             }
-
+            pstmt1.close();
+            PreparedStatement pstmt2 = con.prepareStatement("insert into account(name, password) values(?, ?)");
+            pstmt2.setString(1, name); // nameカラムに第1引数をセット
+            pstmt2.setString(2, password); // passwordカラムに第2引数をセット
+            pstmt2.executeUpdate(); // テーブル更新
+            pstmt2.close();
+            System.out.println("！アカウント作成！");
+            return;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -161,19 +165,21 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
-            PreparedStatement pStmt = con
-                    .prepareStatement("SELECT * FROM account WHERE password LIKE '?'");
-            pStmt.setString(1, password);
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
+            pstmt1.setString(1, password);
+            rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
 
-            rs = pStmt.executeQuery();
-
-            pStmt.close();
-            con.close();
             while (rs.next()) {
-                if (name == rs.getString("name") && password == rs.getString("password"))
+                System.out.println(rs.getString("name"));
+                if (rs.getString("name").equals(name)) {
+                    pstmt1.close();
                     return true;
+                }
+
             }
+            pstmt1.close();
+            con.close();
             return false;
         } catch (Exception e) {
             e.printStackTrace();

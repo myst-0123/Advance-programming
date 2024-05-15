@@ -46,7 +46,7 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt = con.prepareStatement("insert into twit(name, content) values(?, ?, ?)");
             pstmt.setString(1, name); // nameカラムに第1引数をセット
             pstmt.setString(2, content); // contentカラムに第2引数をセット
@@ -64,7 +64,7 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             String sql = "SELECT * FROM twit ORDER BY created_at desc";
             PreparedStatement pStmt = con.prepareStatement(sql);
 
@@ -86,7 +86,7 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
 
             PreparedStatement pStmt = con
                     .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
@@ -107,7 +107,7 @@ public class DBManager {
     public void delete(String name, int deleteId) {
         Connection con = null;
         try {
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from twit where id = ?");
             pstmt1.setInt(1, deleteId);
             ResultSet rs = pstmt1.executeQuery(); // deleteId番目のtwitを参照
@@ -141,7 +141,7 @@ public class DBManager {
             ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
             while (rs.next()) {
                 if ((rs.getString("name")).equals(name)) { // passwordが一致するアカウントのnameとプログラム実行者のアカウント名が一致していれば
-                    System.out.println("！既に同じアカウントが存在しています！");
+                    System.out.println("！既に同じアカウントが存在します！");
                     pstmt1.close();
                     return;
                 }
@@ -152,7 +152,6 @@ public class DBManager {
             pstmt2.setString(2, password); // passwordカラムに第2引数をセット
             pstmt2.executeUpdate(); // テーブル更新
             pstmt2.close();
-            System.out.println("！アカウント作成！");
             return;
         } catch (Exception e) {
             e.printStackTrace();
@@ -176,7 +175,6 @@ public class DBManager {
                     pstmt1.close();
                     return true;
                 }
-
             }
             pstmt1.close();
             con.close();

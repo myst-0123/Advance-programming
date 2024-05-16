@@ -21,9 +21,15 @@
 </dl>
 
 ## データベース
+twitテーブル
 | id |name|content|create_at|
 |:--:|:--:|:-----:|:-------:|
 |int |text| text  |   text  |
+
+accountテーブル
+| id |name|password|
+|:--:|:--:|:------:|
+|int |text| text  |   
 
 ## その他課題について
 その他の共有する課題は,Reportフォルダにどの課題であるかを一目でわかるような状態で保存する。

@@ -11,11 +11,11 @@ public class Twit {
         return singletonTwit; //デザインパターン:Singleton(インスタンスを唯一に)
     }
 
-    public void twit(){ //twitを行うメソッド
+    public void twit(String name){ //twitを行うメソッド
         Scanner scan = new Scanner(System.in); //入力用Scannerクラス
 
-        System.out.print("twitするアカウントの名前を入力してください：");
-        String name = scan.next(); //twitする人のアカウント名
+        // System.out.print("twitするアカウントの名前を入力してください：");
+        // String name = scan.next(); //twitする人のアカウント名
         System.out.print("twitの内容を入力してください：");
         String content = scan.next(); //twit内容
 

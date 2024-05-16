@@ -12,11 +12,11 @@ public class Delete {
         return singletonDelete; //デザインパターン:Singleton(インスタンスを唯一に)
     }
 
-    public void delete(){ //twitを削除するメソッド
+    public void delete(String name){ //twitを削除するメソッド
         Scanner scan = new Scanner(System.in); //入力用Scannerクラス
 
-        System.out.print("あなたのアカウント名を入力してください。");
-        String name = scan.next(); //プログラム実行者のアカウント名
+        // System.out.print("あなたのアカウント名を入力してください。");
+        // String name = scan.next(); //プログラム実行者のアカウント名
         System.out.print("削除するtwitのidを入力してください：");
         int deleteId = scan.nextInt(); //削除twitのid
 

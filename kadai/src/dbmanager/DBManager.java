@@ -16,7 +16,7 @@ public class DBManager {
     }
 
     // クエリ結果の整形
-    private List<Twit> ParseResult(ResultSet rs) {
+    private List<Twit> ParseResult(ResultSet rs) throws SQLException {
         List<Twit> twitList = new ArrayList<Twit>();
         try {
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt = con
                     .prepareStatement("insert into twit(name, content,created_at) values(?, ?, ?)");
             pstmt.setString(1, name); // nameカラムに第1引数をセット
@@ -66,7 +66,7 @@ public class DBManager {
         List<Twit> val = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             String sql = "SELECT * FROM twit ORDER BY created_at desc";
             PreparedStatement pStmt = con.prepareStatement(sql);
 
@@ -86,17 +86,19 @@ public class DBManager {
     public List<Twit> getTwit(String searchWord) {
         Connection con = null;
         ResultSet rs = null;
-        List<Twit> val = null;
+        List<Twit> val = new ArrayList<>();
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
-
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            // 文字列searchWordがcontentカラムまたはnameカラムに含まれているデータを取得
             PreparedStatement pStmt = con
-                    .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
-            pStmt.setString(1, searchWord);
-
+                    .prepareStatement(
+                            "SELECT * FROM twit WHERE content LIKE ? OR name LIKE ? ORDER BY created_at desc");
+            pStmt.setString(1, "%" + searchWord + "%");
+            pStmt.setString(2, "%" + searchWord + "%");
             rs = pStmt.executeQuery();
             val = ParseResult(rs);
+            rs.close();
             pStmt.close();
             con.close();
         } catch (Exception e) {
@@ -139,7 +141,7 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
@@ -168,7 +170,7 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照

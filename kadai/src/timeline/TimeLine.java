@@ -31,8 +31,10 @@ public class TimeLine {
         }
 
         // リストの先頭からSHOW_MAXIMUM_TWITの数だけスライスする
-        List<Twit> subList = TL_list.subList(0, SHOW_MAXIMUM_TWIT);
-
+        int twitSize = TL_list.size();
+        if (twitSize > SHOW_MAXIMUM_TWIT)
+            twitSize = SHOW_MAXIMUM_TWIT;
+        List<Twit> subList = TL_list.subList(0, twitSize);
         return subList;
     }
 }

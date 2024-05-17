@@ -21,7 +21,7 @@ public class ShowTimeLineCL {
         tl = new TimeLine(max_twits);
 
         // 定期実行を行うためのTimer, TimerTask
-        timer = new Timer(false);
+        // timer = new Timer(false);
         // task = new TimerTask() {
         // @override
         // public void run() {
@@ -30,7 +30,7 @@ public class ShowTimeLineCL {
         // };
         // TL_UPDATE_TIME毎にShowTimeLineを実行
         // 単位がmsのため、1000倍する
-        timer.schedule(task, 0, TL_UPDATE_TIME * 1000);
+        // timer.schedule(task, 0, TL_UPDATE_TIME * 1000);
     }
 
     // TimeLineの表示
@@ -46,10 +46,10 @@ public class ShowTimeLineCL {
         // Twitsを表示
         for (Twit tw : tl_list) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println(tw.name);
-            System.out.println(tw.createdAt);
+            System.out.println(tw.id + ". " + tw.name + "  " + tw.createdAt);
             System.out.println(tw.content);
         }
+        System.out.println("------------------------------------------------------------------");
     }
 
     // TimeLineの更新の停止

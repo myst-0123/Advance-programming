@@ -6,6 +6,7 @@ import dbmanager.Twit;
 
 import login.Login;
 import signup.Signup;
+import search.Search;
 
 public class Main {
     public static void main(String args[]) {
@@ -15,7 +16,7 @@ public class Main {
         DBManager dbManager = DBManager.getInstance();
         boolean isContinue = true; // 継続するかどうか
         boolean isLogin = false; // ログインしているかどうか
-        while (isContinue) {
+        while (!isLogin && isContinue) {
             System.out.println("動作を選択肢番号から選んでください");
             int number = scan.nextInt();
             switch (number) {
@@ -27,10 +28,13 @@ public class Main {
                     Login log = Login.getInstance();
                     log.login();
                     break;
+                case 3:
+                    Search sear = Search.getInstance();
+                    sear.search();
 
                     
-            }
-        }
+         
+
         
     }
 }

@@ -1,9 +1,10 @@
 package search;
 
-import java.sql.PreparedStatement;
+import java.util.List;
 import java.util.Scanner;
 
-import DBManager.DBManager;
+import dbmanager.DBManager;
+import dbmanager.Twit;
 
 public class Search {
     private static Search singletonSearch = new Search();

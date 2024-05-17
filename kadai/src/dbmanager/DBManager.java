@@ -89,7 +89,7 @@ public class DBManager {
         List<Twit> val = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
 
             PreparedStatement pStmt = con
                     .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
@@ -134,7 +134,7 @@ public class DBManager {
     }
 
     // アカウント新規作成
-    public void signin(String name, String password) {
+    public void signup(String name, String password) {
         Connection con = null;
 
         try {

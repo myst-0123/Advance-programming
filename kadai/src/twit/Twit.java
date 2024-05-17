@@ -1,7 +1,7 @@
 package twit;
 
 import java.util.Scanner;
-import dbmabager.DBManager;
+import dbmanager.DBManager;
 
 public class Twit {
     private static Twit singletonTwit = new Twit();

@@ -36,7 +36,7 @@ public class DBManager {
     }
 
     // ツイットの作成
-    public void Twit(String name, String content) {
+    public void twit(String name, String content) {
         Connection con = null;
 
         // 作成日時の取得とフォーマットの整形

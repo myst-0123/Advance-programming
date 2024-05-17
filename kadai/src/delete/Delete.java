@@ -1,7 +1,7 @@
 package delete;
 
 import java.util.Scanner;
-import dbmabager.DBManager;
+import dbmanager.DBManager;
 
 public class Delete {
     private static Delete singletonDelete = new Delete();

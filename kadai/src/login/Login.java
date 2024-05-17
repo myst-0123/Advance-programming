@@ -1,7 +1,7 @@
 package login;
 
 import java.util.Scanner;
-import dbManager.DBManager;
+import dbmanager.DBManager;
 
 public class Login {
     private static Login singletonLogin = new Login();

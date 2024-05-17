@@ -12,7 +12,7 @@ import search.Search;
 import timeline.*;
 import post.Post;
 
-public class Test {
+public class TwitTest {
     @Test public void signupTest(){
         Signup signup = Signup.getInstance();
         for (int i = 0; i < 5; i++) {
@@ -22,7 +22,7 @@ public class Test {
         Connection con = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt = con.prepareStatement("select * from account");
             ResultSet rs = pstmt.executeQuery();
             while (rs.next()) {

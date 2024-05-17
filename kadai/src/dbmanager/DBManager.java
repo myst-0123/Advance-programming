@@ -90,6 +90,7 @@ public class DBManager {
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+
             // 文字列searchWordがcontentカラムまたはnameカラムに含まれているデータを取得
             PreparedStatement pStmt = con
                     .prepareStatement(

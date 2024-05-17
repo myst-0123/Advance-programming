@@ -1,6 +1,5 @@
 package twit;
 
-import java.sql.PreparedStatement;
 import java.util.Scanner;
 import dbmabager.DBManager;
 
@@ -20,8 +19,6 @@ public class Twit {
         String content = scan.next(); //twit内容
 
         (DBManager.getInstance()).twit(name, content); //DB操作
-
-        scan.close();
     }
 }
 

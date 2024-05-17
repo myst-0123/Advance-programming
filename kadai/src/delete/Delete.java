@@ -1,7 +1,5 @@
 package delete;
 
-import java.sql.PreparedStatement;
-import java.sql.ResultSet;
 import java.util.Scanner;
 import dbmabager.DBManager;
 
@@ -21,8 +19,6 @@ public class Delete {
         int deleteId = scan.nextInt(); //削除twitのid
 
         (DBManager.getInstance()).delete(name, deleteId); //DB操作
-
-        scan.close();
     }
 }
 

@@ -29,6 +29,5 @@ public class Search {
             System.out.println(tw.createdAt);
             System.out.println(tw.content);
         }
-        scan.close();
     }
 }

@@ -7,7 +7,7 @@ import dbmanager.*;
 
 public class TimeLine {
 
-    public TimeLineState stateTL;
+    // public TimeLineState stateTL;
     private int SHOW_MAXIMUM_TWIT = 10;
 
     // コンストラクタ, TLの最大表示数を設定
@@ -19,11 +19,11 @@ public class TimeLine {
     // TimeLineの更新
     // SHOW_MAXIMUM_TWITの数になるように減らして返す
     public List<Twit> updateTL() {
-        List<Twit> TL_list = new List<Twit>();
+        List<Twit> TL_list = new ArrayList<Twit>();
 
         // TLを取得
         // 返り値は, Created_atの降順リスト
-        TL_list = DBManager.getInstance.geTwits();
+        TL_list = DBManager.getInstance().getTwit();
 
         /// エラー処理、DBから情報が取得できなかったら処理を終了する
         if (TL_list == null) {

@@ -2,6 +2,7 @@ import java.sql.*;
 
 import org.junit.Test;
 import static org.junit.Assert.*;
+import org.junit.runners.MethodSorters;
 
 import dbmanager.DBManager;
 import dbmanager.Twit;
@@ -12,11 +13,13 @@ import search.Search;
 import timeline.*;
 import post.Post;
 
+@FixMethodOrder (MethodSorters.NAME_ASCENDING)
 public class TwitTest {
-    @Test public void signupTest(){
+    @Test public void test01_signupTest(){
         Signup signup = Signup.getInstance();
         for (int i = 0; i < 5; i++) {
-            signup.signup();   
+            signup.signup();
+            System.out.println();
         }
 
         Connection con = null;
@@ -36,7 +39,7 @@ public class TwitTest {
         }
     }
 
-    @Test public void loginTest(){
+    @Test public void test02_loginTest(){
         Login login = Login.getInstance();
         for (int i = 0; i < 3; i++) {
             System.out.println(login.login());

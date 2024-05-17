@@ -22,6 +22,7 @@ public class Login {
         if (DBManager.getInstance().login(name, password)) // ログイン成功
             return name;
         else // ログイン失敗
-            return null;
+            System.out.println("!アカウント名またはパスワードが違います!");
+        return null;
     }
 }

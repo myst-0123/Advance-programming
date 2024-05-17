@@ -1,5 +1,6 @@
 package timeline;
 
+import java.util.List;
 import java.util.Timer;
 import java.util.TimerTask;
 
@@ -21,12 +22,12 @@ public class ShowTimeLineCL {
 
         // 定期実行を行うためのTimer, TimerTask
         timer = new Timer(false);
-        task = new TimerTask() {
-            @override
-            public void run() {
-                ShowTimeLine();
-            }
-        }
+        // task = new TimerTask() {
+        // @override
+        // public void run() {
+        // ShowTimeLine();
+        // }
+        // };
         // TL_UPDATE_TIME毎にShowTimeLineを実行
         // 単位がmsのため、1000倍する
         timer.schedule(task, 0, TL_UPDATE_TIME * 1000);
@@ -39,7 +40,7 @@ public class ShowTimeLineCL {
 
         if (tl_list == null) {
             System.out.println("ERROR : Twitを読み込めません");
-            return null;
+            return;// null
         }
 
         // Twitsを表示
@@ -65,16 +66,16 @@ public class ShowTimeLineCL {
 
     // TimeLineの更新の再開
     public void RestartUpdaeteTL() {
-        if(task != null) {
+        if (task != null) {
             System.out.println("更新中");
         }
         // Taskインスタンスの再生成
-        task = new TimerTask() {
-            @override
-            public void run() {
-                ShowTimeLine();
-            }
-        }
+        // task = new TimerTask() {
+        // @override
+        // public void run() {
+        // ShowTimeLine();
+        // }
+        // };
         // TL_UPDATE_TIME毎にShowTimeLineを実行
         timer.schedule(task, 0, TL_UPDATE_TIME * 1000);
         System.out.println("再開");

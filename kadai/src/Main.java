@@ -29,8 +29,10 @@ public class Main {
                 case 2:
                     Login log = Login.getInstance();
                     String loginName = log.login();
-                    if (loginName != null)
+                    if (loginName != null) {
                         name = loginName;
+                        isLogin = true;
+                    }
                     break;
                 case 3:
                     Search sear = Search.getInstance();

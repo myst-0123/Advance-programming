@@ -16,7 +16,7 @@ public class DBManager {
     }
 
     // クエリ結果の整形
-    private List<Twit> ParseResult(ResultSet rs) {
+    private List<Twit> ParseResult(ResultSet rs) throws SQLException {
         List<Twit> twitList = new ArrayList<Twit>();
         try {
             while (rs.next()) {
@@ -86,17 +86,20 @@ public class DBManager {
     public List<Twit> getTwit(String searchWord) {
         Connection con = null;
         ResultSet rs = null;
-        List<Twit> val = null;
+        List<Twit> val = new ArrayList<>();
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
 
+            // 文字列searchWordがcontentカラムまたはnameカラムに含まれているデータを取得
             PreparedStatement pStmt = con
-                    .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
-            pStmt.setString(1, searchWord);
-
+                    .prepareStatement(
+                            "SELECT * FROM twit WHERE content LIKE ? OR name LIKE ? ORDER BY created_at desc");
+            pStmt.setString(1, "%" + searchWord + "%");
+            pStmt.setString(2, "%" + searchWord + "%");
             rs = pStmt.executeQuery();
             val = ParseResult(rs);
+            rs.close();
             pStmt.close();
             con.close();
         } catch (Exception e) {

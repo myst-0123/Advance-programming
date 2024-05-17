@@ -14,8 +14,6 @@ public class Main {
     public static void main(String args[]) {
         Scanner scan = new Scanner(System.in); // 入力用Scannerクラス
         String name = "";
-        System.out.println("Hello, World !");
-        DBManager dbManager = DBManager.getInstance();
         boolean isContinue = true; // 継続するかどうか
         boolean isLogin = false; // ログインしているかどうか
         while (!isLogin && isContinue) { // ログインしていない場合

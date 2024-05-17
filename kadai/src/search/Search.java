@@ -25,9 +25,9 @@ public class Search {
         // Twitsを表示
         for (Twit tw : tl_list) {
             System.out.println("------------------------------------------------------------------");
-            System.out.println(tw.id + ". " + tw.name);
-            System.out.println(tw.createdAt);
+            System.out.println(tw.id + ". " + tw.name + "  " + tw.createdAt);
             System.out.println(tw.content);
         }
+        System.out.println("------------------------------------------------------------------");
     }
 }

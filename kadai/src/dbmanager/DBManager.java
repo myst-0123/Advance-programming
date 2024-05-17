@@ -46,8 +46,9 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
-            PreparedStatement pstmt = con.prepareStatement("insert into twit(name, content) values(?, ?, ?)");
+            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            PreparedStatement pstmt = con
+                    .prepareStatement("insert into twit(name, content,created_at) values(?, ?, ?)");
             pstmt.setString(1, name); // nameカラムに第1引数をセット
             pstmt.setString(2, content); // contentカラムに第2引数をセット
             pstmt.setString(3, createdAt); // 作成日時をセット
@@ -62,14 +63,15 @@ public class DBManager {
     public List<Twit> getTwit() {
         Connection con = null;
         ResultSet rs = null;
+        List<Twit> val = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
             String sql = "SELECT * FROM twit ORDER BY created_at desc";
             PreparedStatement pStmt = con.prepareStatement(sql);
 
             rs = pStmt.executeQuery();
-
+            val = ParseResult(rs);
             pStmt.close();
             con.close();
         } catch (Exception e) {
@@ -77,13 +79,14 @@ public class DBManager {
             return null;
         }
 
-        return ParseResult(rs);
+        return val;
     }
 
     // 単語検索ありのデータの取得
     public List<Twit> getTwit(String searchWord) {
         Connection con = null;
         ResultSet rs = null;
+        List<Twit> val = null;
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
@@ -93,6 +96,7 @@ public class DBManager {
             pStmt.setString(1, searchWord);
 
             rs = pStmt.executeQuery();
+            val = ParseResult(rs);
             pStmt.close();
             con.close();
         } catch (Exception e) {
@@ -100,7 +104,7 @@ public class DBManager {
             return null;
         }
 
-        return ParseResult(rs);
+        return val;
     }
 
     // ツイットの削除
@@ -135,7 +139,7 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
@@ -164,7 +168,7 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照

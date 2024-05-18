@@ -177,7 +177,6 @@ public class DBManager {
             rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
 
             while (rs.next()) {
-                System.out.println(rs.getString("name"));
                 if (rs.getString("name").equals(name)) {
                     pstmt1.close();
                     return true;

@@ -118,7 +118,9 @@ public class DBManager {
             PreparedStatement pstmt1 = con.prepareStatement("select * from twit where id = ?");
             pstmt1.setInt(1, deleteId);
             ResultSet rs = pstmt1.executeQuery(); // deleteId番目のtwitを参照
+            boolean isExist = false; // deleteId番目のtwitが存在するかどうか
             while (rs.next()) {
+                isExist = true;
                 if ((rs.getString("name")).equals(name)) { // deleteId番目のtwitのnameとプログラム実行者のアカウント名が一致していれば
                     PreparedStatement pstmt2 = con.prepareStatement("delete from twit where id = ?");
                     pstmt2.setInt(1, deleteId); // idがdeleteIdのtwitを
@@ -128,6 +130,7 @@ public class DBManager {
                     System.out.println("！そのtwitはあなたのものではありません！");
                 }
             }
+            if(!isExist) System.out.println("そのようなtwitは存在しません。");
 
             rs.close();
             pstmt1.close();
@@ -177,7 +180,6 @@ public class DBManager {
             rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
 
             while (rs.next()) {
-                System.out.println(rs.getString("name"));
                 if (rs.getString("name").equals(name)) {
                     pstmt1.close();
                     return true;

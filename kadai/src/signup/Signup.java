@@ -22,7 +22,5 @@ public class Signup {
         String password = scan.next(); // プログラム実行者のパスワード
 
         DBManager.getInstance().signup(name, password); // DB操作
-
-        scan.close();
     }
 }

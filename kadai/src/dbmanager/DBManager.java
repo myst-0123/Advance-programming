@@ -16,7 +16,7 @@ public class DBManager {
     }
 
     // クエリ結果の整形
-    private List<Twit> ParseResult(ResultSet rs) {
+    private List<Twit> ParseResult(ResultSet rs) throws SQLException {
         List<Twit> twitList = new ArrayList<Twit>();
         try {
             while (rs.next()) {
@@ -46,7 +46,7 @@ public class DBManager {
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt = con
                     .prepareStatement("insert into twit(name, content,created_at) values(?, ?, ?)");
             pstmt.setString(1, name); // nameカラムに第1引数をセット
@@ -66,7 +66,7 @@ public class DBManager {
         List<Twit> val = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             String sql = "SELECT * FROM twit ORDER BY created_at desc";
             PreparedStatement pStmt = con.prepareStatement(sql);
 
@@ -86,17 +86,20 @@ public class DBManager {
     public List<Twit> getTwit(String searchWord) {
         Connection con = null;
         ResultSet rs = null;
-        List<Twit> val = null;
+        List<Twit> val = new ArrayList<>();
         try {
             Class.forName("org.sqlite.JDBC");
             con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
 
+            // 文字列searchWordがcontentカラムまたはnameカラムに含まれているデータを取得
             PreparedStatement pStmt = con
-                    .prepareStatement("SELECT * FROM twit WHERE content LIKE '%?%' ORDER BY created_at desc");
-            pStmt.setString(1, searchWord);
-
+                    .prepareStatement(
+                            "SELECT * FROM twit WHERE content LIKE ? OR name LIKE ? ORDER BY created_at desc");
+            pStmt.setString(1, "%" + searchWord + "%");
+            pStmt.setString(2, "%" + searchWord + "%");
             rs = pStmt.executeQuery();
             val = ParseResult(rs);
+            rs.close();
             pStmt.close();
             con.close();
         } catch (Exception e) {
@@ -115,7 +118,9 @@ public class DBManager {
             PreparedStatement pstmt1 = con.prepareStatement("select * from twit where id = ?");
             pstmt1.setInt(1, deleteId);
             ResultSet rs = pstmt1.executeQuery(); // deleteId番目のtwitを参照
+            boolean isExist = false; // deleteId番目のtwitが存在するかどうか
             while (rs.next()) {
+                isExist = true;
                 if ((rs.getString("name")).equals(name)) { // deleteId番目のtwitのnameとプログラム実行者のアカウント名が一致していれば
                     PreparedStatement pstmt2 = con.prepareStatement("delete from twit where id = ?");
                     pstmt2.setInt(1, deleteId); // idがdeleteIdのtwitを
@@ -125,6 +130,7 @@ public class DBManager {
                     System.out.println("！そのtwitはあなたのものではありません！");
                 }
             }
+            if(!isExist) System.out.println("そのようなtwitは存在しません。");
 
             rs.close();
             pstmt1.close();
@@ -134,12 +140,12 @@ public class DBManager {
     }
 
     // アカウント新規作成
-    public void signin(String name, String password) {
+    public void signup(String name, String password) {
         Connection con = null;
 
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             ResultSet rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
@@ -168,13 +174,12 @@ public class DBManager {
         ResultSet rs = null;
         try {
             Class.forName("org.sqlite.JDBC");
-            con = DriverManager.getConnection("jdbc:sqlite:db/twitDB.db");
+            con = DriverManager.getConnection("jdbc:sqlite:../db/twitDB.db");
             PreparedStatement pstmt1 = con.prepareStatement("select * from account where password = ?");
             pstmt1.setString(1, password);
             rs = pstmt1.executeQuery(); // passwordが一致するアカウントを参照
 
             while (rs.next()) {
-                System.out.println(rs.getString("name"));
                 if (rs.getString("name").equals(name)) {
                     pstmt1.close();
                     return true;

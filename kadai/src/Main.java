@@ -1,8 +1,5 @@
-import java.util.List;
 import java.util.Scanner;
 
-import dbmanager.DBManager;
-import dbmanager.Twit;
 import delete.Delete;
 import login.Login;
 import signup.Signup;

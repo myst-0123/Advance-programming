@@ -13,7 +13,7 @@ import post.Post;
 public class Main {
     public static void main(String args[]) {
         Scanner scan = new Scanner(System.in); // 入力用Scannerクラス
-        String name = "";
+        String name = ""; // アカウント名を格納
         boolean isContinue = true; // 継続するかどうか
         boolean isLogin = false; // ログインしているかどうか
         while (!isLogin && isContinue) { // ログインしていない場合
@@ -37,7 +37,7 @@ public class Main {
                     sear.search();
                     break;
                 case 4:
-                    ShowTimeLineCL time = new ShowTimeLineCL(10, 10);
+                    ShowTimeLineCL time = new ShowTimeLineCL(10);
                     time.ShowTimeLine();
                     break;
                 case 5:
@@ -62,13 +62,13 @@ public class Main {
                     sear.search();
                     break;
                 case 4:
-                    ShowTimeLineCL time = new ShowTimeLineCL(10, 10);
+                    ShowTimeLineCL time = new ShowTimeLineCL(10);
                     time.ShowTimeLine();
                     break;
                 case 5:
                     isContinue = false;
             }
         }
-
+        scan.close();
     }
 }

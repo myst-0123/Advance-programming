@@ -24,36 +24,38 @@ void templateMatchingGray(Image *src, Image *template, Point *position,
             // SSD
             for (j = 0; j < template->height; j++) {
                 for (i = 0; i < template->width; i++) {
-                    // if (template->data[j * template->width + i] == 0)
-                    //     continue;  // テンプレートが黒ならスキップ
+                    // if (template->data[j * template->width + i] == 0) {
+                    //     continue;  // テンプレートが黒ならスキップ(レベル４)
+                    // }
                     int v = (src->data[(y + j) * src->width + (x + i)] -
                              template->data[j * template->width + i]);
-                    distance += v * v;
+                    distance += v * v;  // abs(v) (レベル４)
                 }
             }
             if (distance < min_distance) {
                 min_distance = distance;
                 ret_x = x;
                 ret_y = y;
-                if (distance < threshold) goto CUT;
+                // if (distance < threshold - 0.2) goto CUT;
             }
         }
     }
 CUT:
-    // 背景画像50%縮小の場合
+    //  背景画像50%縮小の場合
     int src_size = src->height * src->width;
-    if (src_size > 80000 && src_size < 180000) {
-        int min_distance = INT_MAX;
-        int pre_x = ret_x;
-        int pre_y = ret_y;
-        for (y = pre_y * 2 - 1; y < pre_y * 2 + 2; y++) {
-            for (x = pre_x * 2 - 1; x < pre_x * 2 + 2; x++) {
+    if (src_size > 75000 && src_size < 180000) {
+        min_distance = INT_MAX;
+        int pre_x = ret_x * 2;
+        int pre_y = ret_y * 2;
+        for (y = pre_y - 1; y < pre_y + 2; y++) {
+            for (x = pre_x - 1; x < pre_x + 2; x++) {
                 int distance = 0;
                 // SSD
                 for (j = 0; j < tempori->height; j++) {
                     for (i = 0; i < tempori->width; i++) {
-                        // if (template->data[j * template->width + i] == 0)
-                        //     continue;  // テンプレートが黒ならスキップ
+                        // if (tempori->data[j * tempori->width + i] == 0)
+                        //     continue;  //
+                        //     テンプレートが黒ならスキップ(レベル４)
                         int v =
                             (srcori->data[(y + j) * srcori->width + (x + i)] -
                              tempori->data[j * tempori->width + i]);
@@ -70,7 +72,7 @@ CUT:
     }
     position->x = ret_x;
     position->y = ret_y;
-    *distance = sqrt(min_distance) / (template->width * template->height);
+    *distance = sqrt(min_distance) / (tempori->width * tempori->height);
 }
 
 void templateMatchingColor(Image *src, Image *template, Point *position,
@@ -210,16 +212,10 @@ int main(int argc, char **argv) {
     }
 
     if (distance < threshold) {
-        // int img_size = img->height * img->width;
-        // if (img_size > 80000 && img_size < 180000) {
-        //     template->width *= 2;
-        //     template->height *= 2;
-        // }
         writeResult(output_name_txt, getBaseName(template_file), result,
                     template2->width, template2->height, rotation, distance);
         if (isPrintResult) {
-            printf("[Found    ] %s %d %d %d %d %d %f\n",
-                   getBaseName(template_file), result.x, result.y,
+            printf("[Found    ] %s %d %d %d %d %d %f\n", getBaseName(template_file), result.x, result.y,
                    template2->width, template2->height, rotation, distance);
         }
         if (isWriteImageResult) {
@@ -234,8 +230,7 @@ int main(int argc, char **argv) {
         }
     } else {
         if (isPrintResult) {
-            printf("%f %f[Not found] %s %d %d %d %d %d %f\n", distance,
-                   threshold, getBaseName(template_file), result.x, result.y,
+            printf("[Not found] %s %d %d %d %d %d %f\n", getBaseName(template_file), result.x, result.y,
                    template2->width, template2->height, rotation, distance);
         }
     }

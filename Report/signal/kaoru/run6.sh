@@ -14,17 +14,17 @@ for image in $1/test/*.ppm; do
         echo $i%
         for template in $1/*.ppm; do
             tempbname=`basename ${template}`
-            tempname="imgproc/"$tempbname
-            tempname2="imgproc/"$tempbname+"2"
+            tempname="imgproc/""n"$tempbname
+            tempname2="imgproc/"$tempbname
             convert -rotate $i% "${template}" "${tempname}" # 回転
             convert -resize 50% -rotate $i% "${template}" "${tempname2}" # 回転縮⼩
             echo $tempbname:
 	        if [ $x = 0 ]
 	        then
-	            ./matching $name "${tempname2}" $i 1.0 cpg "${image}" "${tempname}"
+	            ./matching $name "${tempname2}" $i 0.3 cpg "${image}" "${tempname}"
 	            x=1
 	        else
-	            ./matching $name "${tempname2}" $i 1.0 pg "${image}" "${tempname}"
+	            ./matching $name "${tempname2}" $i 0.3 pg "${image}" "${tempname}"
 	        fi
         done
         echo ""

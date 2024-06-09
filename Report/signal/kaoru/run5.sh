@@ -46,10 +46,10 @@ for image in $1/test/*.ppm; do
 	echo $tempbname:
 	if [ $x = 0 ]
 	then
-	    ./matching $name "${tempname}" $rotation 0.8 cpg "${image}" "${template}"
+	    ./matching $name "${tempname}" $rotation 0.3 cpg "${image}" "${template}"
 	    x=1
 	else
-	    ./matching $name "${tempname}" $rotation 0.8 pg "${image}" "${template}"
+	    ./matching $name "${tempname}" $rotation 0.3 pg "${image}" "${template}"
 	fi
     done
     echo ""
@@ -73,10 +73,10 @@ for image in $1/test/*.ppm; do
 	echo $tempbname:
 	if [ $x = 0 ]
 	then
-	    ./matching $name "${template}" $rotation 0.5 cpg "${image}" "${tempname}"
+	    ./matching $name "${template}" $rotation 0.3 cpg "${image}" "${tempname}"
 	    x=1
 	else
-	    ./matching $name "${template}" $rotation 0.5 pg "${image}" "${tempname}"
+	    ./matching $name "${template}" $rotation 0.3 pg "${image}" "${tempname}"
 	fi
     done
     echo ""

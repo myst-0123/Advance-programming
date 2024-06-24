@@ -16,13 +16,13 @@ public class Main {
             System.out.println("対戦相手を選択してください\n");
             System.out.println("0 : 自分で入力, 1 : ランダムCPU, 2 : 自分のAIを使用\n");
             String str = sc.next();
-            if(str == "0") {
+            if(str.equals("0")) {
                 mode = 0;
             }
-            else if(str == "1") {
+            else if(str.equals("1")) {
                 mode = 1;
             }
-            else if(str == "2") {
+            else if(str.equals("2")) {
                 mode = 2;
             }
             Game(mode);
@@ -30,7 +30,7 @@ public class Main {
             System.out.println("もう一度対戦しますか (y / n)\n");
             str = sc.next();
 
-            if(str == "y") {
+            if(str.equals("n")) {
                 System.out.println("終了します\n");
                 break;
             }
@@ -54,13 +54,13 @@ public class Main {
         // =====================================================
         // 
         // ↓↓↓ ここを変更 ↓↓↓
-        var player = new MinMaxPlayer();
+        var player = new HumanPlayer();
         // ↑↑↑ ここを変更 ↑↑↑
         //  
         // =====================================================
         // =====================================================
 
-        var enemyPlayer = new MinMaxPlayer();
+        var enemyPlayer = new HumanPlayer();
 
         while(inGame) {
             turnNum++;
@@ -82,9 +82,10 @@ public class Main {
                 int move = -1;
                 while(true) {
                     if(gameMode == 0){
-                        String str = sc.next();
+                        
                         try{
-                            System.out.println("手を入力してください。(右上:0・左下:8)\n");
+                            System.out.println("手を入力してください。(右上:0・左下:8)");
+                            String str = sc.next();
                             move = Integer.parseInt(str);
                         }
                         catch (NumberFormatException ex){ }
@@ -119,7 +120,7 @@ public class Main {
             // 2 : 相手の勝利
             result = checkFinish(board);
             // resultが0より大きいまたは、すべてのマスが埋まることで終了
-            inGame = !(result > 0) || isContinue(board);
+            inGame = !((result > 0) || !isContinue(board));
 
             try {
                 Thread.sleep(1000);
@@ -159,7 +160,7 @@ public class Main {
 
     static void ShowBoard(int[] board, int turnNum)
     {
-        System.out.println(String.format("=== Trun %2d ===", turnNum));
+        System.out.println(String.format("=== Turn %2d ===", turnNum));
         
         String s = "";
         for(int i = 0; i < board.length; i++) {

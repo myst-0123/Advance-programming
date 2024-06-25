@@ -120,7 +120,7 @@ public class Move {
             var o = offsets(dist)[dir];
             int col = col0 + o[0], row = row0 + o[1];
             // 盤面の外へ出たら終了
-            if(Move,isValid(col, row) == false)
+            if(Move.isValid(col, row) == false)
                 break;
             line.add(index(col, row));
         }

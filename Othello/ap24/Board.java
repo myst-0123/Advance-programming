@@ -8,7 +8,7 @@ public interface Board {
 
     Color get(int k);
     Move getMove();
-    Color getTrun();
+    Color getTurn();
     int count(Color color);
     boolean isEnd();
     Color winner();

@@ -5,7 +5,7 @@ import static ap24.Board.SIZE;
 import static ap24.Color.BLACK;
 import static ap24.Color.WHITE;
 import java.util.ArrayList;
-import java.util.collections;
+import java.util.Collections;
 import java.util.List;
 import java.util.stream.IntStream;
 import ap24.Board;

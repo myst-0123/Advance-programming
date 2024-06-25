@@ -64,7 +64,7 @@ public class MyBoard implements Board, Cloneable {
         return MyBoardFormatter.format(this);
     }
 
-    public int count(Color color){ //color色の石の数を返却？
+    public int count(Color color){ //color色の石の数を返却
         return countAll().getOrDefault(color, 0L).intValue();
     }
 
@@ -80,25 +80,25 @@ public class MyBoard implements Board, Cloneable {
         return v > 0 ? BLACK : WHITE;
     }
 
-    public void foul(Color color){
+    public void foul(Color color){ //color色のプレイヤーがファールしたら全てのマスに相手の色の石が置かれる
         var winner = color.flipped();
         IntStream.range(0, LENGTH).forEach(k -> this.board[k] = winner);
     }
 
     public int score() {
-        var cs = countAll();
-        var bs = cs.getOrDefault(BLACK, 0L);
-        var ws = cs.getOrDefault(WHITE, 0L);
-        var ns = LENGTH - bs - ws;
-        int score = (int)(bs - ws);
+        var cs = countAll(); //各色の石の数
+        var bs = cs.getOrDefault(BLACK, 0L); //BLACKの石の数
+        var ws = cs.getOrDefault(WHITE, 0L); //WHITEの石の数
+        var ns = LENGTH - bs - ws; //まだ石に置かれていないマスの数
+        int score = (int)(bs - ws); //BLACKの石の数 - WHITEの石の数
 
-        if(bs == 0 || ws == 0)
-            score += Integer.signum(score) * ns;
+        if(bs == 0 || ws == 0) //どちらかのプレイヤーの石の数が0なら
+            score += Integer.signum(score) * ns; //(BLACKの勝ちなら1,WHITEの勝ちなら-1) * (石の置かれていないマスの数)
 
         return score;
     }
 
-    Map<Color, Long> countAll(){
+    Map<Color, Long> countAll(){ //board中のBLACK、WHITEのマスの数のマップ(キー:色、値:マスの数)
         return Arrays.stream(this.board).collect(
             Collectors.groupingBy(Function.identity(), Collectors.counting()));
     }
@@ -148,27 +148,27 @@ public class MyBoard implements Board, Cloneable {
         return new ArrayList<Move>();
     }
 
-    public MyBoard placed(Move move) {
+    public MyBoard placed(Move move) { //石を置くメソッド
         var b = clone();
-        b.move = move;
+        b.move = move; //引数を代入
 
-        if(move.isPass() | move.isNone())
-            return b;
+        if(move.isPass() | move.isNone()) //パスか石が置かれていないなら
+            return b; //そのまま返却
 
-        var k = move.getIndex();
-        var color = move.getColor();
-        var lines = b.lines(k);
-        for(var line: lines){
-            for(var p: outflanked(line, color)){
-                b.board[p.getIndex()] = color;
+        var k = move.getIndex(); //Moveが表すマスの番号
+        var color = move.getColor(); //Moveが表すマスの色
+        var lines = b.lines(k); //k番目のマスから8方向のマスの番号のリスト
+        for(var line: lines){ //k番目のマスからの8方向に対して
+            for(var p: outflanked(line, color)){ //可能な全てのMove(マス)について
+                b.board[p.getIndex()] = color; //色をMoveが表すマスの色に変える(=石を置いてひっくり返す)
             }
         }
-        b.set(k, color);
+        b.set(k, color); //マスkにMoveが表す色の石を置く
 
         return b;
     }
 
-    public MyBoard flipped() {
+    public MyBoard flipped() { //盤面上の石の色を反転するメソッド
         var b = clone();
         IntStream.range(0, LENGTH).forEach(k -> b.board[k] = b.board[k].flipped());
         b.move = this.move.flipped();

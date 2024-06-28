@@ -118,7 +118,7 @@ public class MyBoard implements Board, Cloneable {
         var moves = new ArrayList<Integer>();
         for(int k = 0; k < LENGTH; k++){
             var c = this.board[k];
-            if(c != NONE) continue; //石が置かれていなければ次のマスを参照
+            if(c != NONE) continue; //石が置かれていなければ次のマスを参照 -> 置かれている石の色はなんでもいい？
             for(var line : lines(k)){
                 var outflanking = outflanked(line, color); //ある方向の可能なMoveのリスト
                 if(outflanking.size() > 0) moves.add(k); //可能なMoveがあればadd

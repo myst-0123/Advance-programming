@@ -80,10 +80,6 @@ public class MyGame {
   }
 
   Move check(Color turn, Move move, Error error) {
-    if(move.isPass()){
-      return Move.ofPass(turn);
-    }
-
     if (move.isError()) {
       System.err.printf("error: %s %s", turn, error);
       System.err.println(board);

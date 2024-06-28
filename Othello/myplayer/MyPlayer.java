@@ -32,8 +32,21 @@ class MyEval {
     }
 
     // 重み付きでスコアを返す
-    float score(Board board, int k) {
-        return M[k / SIZE][k % SIZE] * board.get(k).getValue();
+    float score(Board board, int k) { // 課題2e 参考:https://bassy84.net/#google_vignette
+        int l_b = ((MyBoard)board).findLegalIndexes(BLACK).size(); //BLACKの合法手
+        int l_w = ((MyBoard)board).findLegalIndexes(WHITE).size(); //WHITEの合法手
+        int n_b = ((MyBoard)board).count(BLACK); //BLACKの石の数
+        int n_w = ((MyBoard)board).count(WHITE); //WHITEの石の数
+
+        int[] w = new int[5]; //w_1~w_5
+        if(n_b + n_w <= 12) w = new int[] {1, +10, -20, +2, -1}; //序盤:石を多く取らないようにする≒合法手の数を重視する
+        else if(n_b + n_w <= 24) w = new int[] {3, +10, -20, +5, -5}; //中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
+        else w = new int[] {5, +5, -10, +10, -20}; //終盤:隅や辺と石の数に注目する
+        return w[0] * M[k / SIZE][k % SIZE] * board.get(k).getValue()
+               + w[1] * l_b
+               + w[2] * l_w
+               + w[3] * n_b
+               + w[4] * n_w;
     }
 }
 

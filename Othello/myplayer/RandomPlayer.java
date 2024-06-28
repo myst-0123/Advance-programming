@@ -15,7 +15,11 @@ public class RandomPlayer extends Player {
 
     public Move think(Board board) {
         var moves = board.findLegalMoves(getColor());
-        var i = this.rand.nextInt(moves.size());
-        return moves.get(i);
+        var i = 0;
+        if(moves.size() > 0){
+            i = this.rand.nextInt(moves.size());
+            return moves.get(i);
+        }
+        return Move.ofPass(getColor());
     }
 }

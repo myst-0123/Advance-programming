@@ -11,15 +11,19 @@ class Competition24 {
   final static long TIME_LIMIT_SECONDS = 60;
 
   public static void main(String args[]) {
-    Function<Color, Player[]> builder = (Color color) -> {
-      return new Player[] {
-        new g24x00.OurPlayer(color),
-        new ap24.league.RandomPlayer(color),
-      };
-    };
 
-    var league = new League(5, builder, TIME_LIMIT_SECONDS);
-    league.run();
+    singleGame(args);
+
+    // Function<Color, Player[]> builder = (Color color) -> {
+    //   return new Player[] {
+    //     new g24x00.OurPlayer(color),
+    //     new ap24.league.RandomPlayer(color),
+    //   };
+    // };
+
+    // var league = new League(5, builder, TIME_LIMIT_SECONDS);
+    // league.run();
+
   }
 
   public static void singleGame(String args[]) {

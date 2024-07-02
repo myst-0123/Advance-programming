@@ -128,4 +128,8 @@ public class Game {
   public static String toString(List<Move> moves) {
     return moves.stream().map(x -> x.toString()).collect(Collectors.joining());
   }
+
+  public Board getBoard() {
+      return board;
+  }
 }

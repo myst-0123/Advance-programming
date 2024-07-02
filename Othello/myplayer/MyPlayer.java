@@ -114,7 +114,7 @@ public class MyPlayer extends ap24.Player {
             return this.eval.value(board);
 
         var moves = board.findLegalMoves(BLACK);
-        moves = order(moves);
+        moves = order(moves, board);
 
         if (depth == 0)
             this.move = moves.get(0);

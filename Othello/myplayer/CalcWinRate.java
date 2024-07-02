@@ -14,6 +14,7 @@ public class CalcWinRate {
             var game = new MyGame(board, player1, player2);
             game.play();
             if(game.getWinner(game.board) == player1) winNumBlack++;
+            System.out.println("\nwin rate:" + (float)(winNumBlack + winNumWhite) / (float)(i + 1) * 100. + "%(" + (i + 1) + ")");
         }
 
         for (int i = 0; i < 100; i++) {
@@ -23,6 +24,8 @@ public class CalcWinRate {
             var game = new MyGame(board, player2, player1);
             game.play();
             if(game.getWinner(game.board) == player1) winNumWhite++;
+            System.out.println("\nwin rate:" + (float)(winNumBlack + winNumWhite) / (101. + (float)i) * 100. + "%(" + (i + 101) + ")");
+
         }
         
         System.out.println("\nwin rate:" + (float)(winNumBlack + winNumWhite) / 2. + "%");

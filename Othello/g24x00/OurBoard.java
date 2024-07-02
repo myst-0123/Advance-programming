@@ -20,6 +20,10 @@ public class OurBoard implements Board, Cloneable {
   Color board[];
   Move move = Move.ofPass(NONE);
 
+  int blackBoard = 0;
+  int whiteBoard = 0;
+  int blacnkBoard = 0;
+
   public OurBoard() {
     this.board = Stream.generate(() -> NONE).limit(LENGTH).toArray(Color[]::new);
     init();
@@ -92,7 +96,26 @@ public class OurBoard implements Board, Cloneable {
     var ns = LENGTH - bs - ws;
     int score = (int) (bs - ws);
 
-    if (bs == 0 || ws == 0)
+    if (bs == 0 || ws == 0)  List<List<Integer>> lines(int k) {
+    var lines = new ArrayList<List<Integer>>();
+    for (int dir = 0; dir < 8; dir++) {
+      var line = Move.line(k, dir);
+      lines.add(line);
+    }
+    return lines;
+  }
+
+  List<Move> outflanked(List<Integer> line, Color color) {
+    if (line.size() <= 1) return new ArrayList<Move>();
+    var flippables = new ArrayList<Move>();
+    for (int k: line) {
+      var c = get(k);
+      if (c == NONE || c == BLOCK) break;
+      if (c == color) return flippables;
+      flippables.add(new Move(k, color));
+    }
+    return new ArrayList<Move>();
+  }
         score += Integer.signum(score) * ns;
 
     return score;
@@ -112,6 +135,15 @@ public class OurBoard implements Board, Cloneable {
     var moves = findNoPassLegalIndexes(color);
     if (moves.size() == 0) moves.add(Move.PASS);
     return moves;
+  }
+
+  void makeBitBoard(Color color) {
+    for (int i = 0; i < LENGTH; i++) {
+      switch(board[i]) {
+        case BLACK:
+          
+      }
+    }
   }
 
   List<Integer> findNoPassLegalIndexes(Color color) {

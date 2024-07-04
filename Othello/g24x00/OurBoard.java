@@ -41,8 +41,13 @@ public class OurBoard implements Board, Cloneable {
     set(Move.parseIndex("c4"), WHITE);
   }
 
-  public Color get(int k) { return this.board[k]; }
-  public Move getMove() { return this.move; }
+  public Color get(int k) {
+    return this.board[k];
+  }
+
+  public Move getMove() {
+    return this.move;
+  }
 
   public Color getTurn() {
     return this.move.isNone() ? BLACK : this.move.getColor().flipped();
@@ -76,7 +81,8 @@ public class OurBoard implements Board, Cloneable {
 
   public Color winner() {
     var v = score();
-    if (isEnd() == false || v == 0 ) return NONE;
+    if (isEnd() == false || v == 0)
+      return NONE;
     return v > 0 ? BLACK : WHITE;
   }
 
@@ -93,7 +99,7 @@ public class OurBoard implements Board, Cloneable {
     int score = (int) (bs - ws);
 
     if (bs == 0 || ws == 0)
-        score += Integer.signum(score) * ns;
+      score += Integer.signum(score) * ns;
 
     return score;
   }
@@ -110,7 +116,8 @@ public class OurBoard implements Board, Cloneable {
 
   List<Integer> findLegalIndexes(Color color) {
     var moves = findNoPassLegalIndexes(color);
-    if (moves.size() == 0) moves.add(Move.PASS);
+    if (moves.size() == 0)
+      moves.add(Move.PASS);
     return moves;
   }
 
@@ -118,10 +125,12 @@ public class OurBoard implements Board, Cloneable {
     var moves = new ArrayList<Integer>();
     for (int k = 0; k < LENGTH; k++) {
       var c = this.board[k];
-      if (c != NONE) continue;
+      if (c != NONE)
+        continue;
       for (var line : lines(k)) {
         var outflanking = outflanked(line, color);
-        if (outflanking.size() > 0) moves.add(k);
+        if (outflanking.size() > 0 && !moves.contains(k))
+          moves.add(k);
       }
     }
     return moves;
@@ -137,12 +146,15 @@ public class OurBoard implements Board, Cloneable {
   }
 
   List<Move> outflanked(List<Integer> line, Color color) {
-    if (line.size() <= 1) return new ArrayList<Move>();
+    if (line.size() <= 1)
+      return new ArrayList<Move>();
     var flippables = new ArrayList<Move>();
-    for (int k: line) {
+    for (int k : line) {
       var c = get(k);
-      if (c == NONE || c == BLOCK) break;
-      if (c == color) return flippables;
+      if (c == NONE || c == BLOCK)
+        break;
+      if (c == color)
+        return flippables;
       flippables.add(new Move(k, color));
     }
     return new ArrayList<Move>();
@@ -158,8 +170,8 @@ public class OurBoard implements Board, Cloneable {
     var k = move.getIndex();
     var color = move.getColor();
     var lines = b.lines(k);
-    for (var line: lines) {
-      for (var p: outflanked(line, color)) {
+    for (var line : lines) {
+      for (var p : outflanked(line, color)) {
         b.board[p.getIndex()] = color;
       }
     }

@@ -13,8 +13,9 @@ class Competition24 {
   public static void main(String args[]) {
     Function<Color, Player[]> builder = (Color color) -> {
       return new Player[] {
-        new g24x00.OurPlayer(color),
-        new ap24.league.RandomPlayer(color),
+          new g24x00.OurPlayer(color),
+          new g24x00.OurPlayerV2(color),
+          // new ap24.league.RandomPlayer(color),
       };
     };
 

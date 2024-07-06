@@ -123,10 +123,15 @@ public class OurBoard implements Board, Cloneable {
       switch(this.board[i]) {
         case BLACK:
           blackBoard |= mask >> i;
+          break;
         case WHITE:
           whiteBoard |= mask >> i;
+          break;
         case BLOCK:
           blockBoard |= mask >> i;
+          break;
+        default:
+          break;
       }
     }
   }
@@ -173,46 +178,46 @@ public class OurBoard implements Board, Cloneable {
     legalBoard |= blankBoard & (temp >> 1);
 
     // 上
-    temp = verticalWatchBoard & (playerBoard << 8);
+    temp = verticalWatchBoard & (playerBoard << 6);
     for (int i = 0; i < 3; i++) {
-      temp |= verticalWatchBoard & (temp << 8);
+      temp |= verticalWatchBoard & (temp << 6);
     }
-    legalBoard |= blankBoard & (temp << 8);
+    legalBoard |= blankBoard & (temp << 6);
 
     // 下
-    temp = verticalWatchBoard & (playerBoard >> 8);
+    temp = verticalWatchBoard & (playerBoard >> 6);
     for (int i = 0; i < 3; i++) {
-      temp |= verticalWatchBoard & (temp >> 8);
+      temp |= verticalWatchBoard & (temp >> 6);
     }
-    legalBoard |= blankBoard & (temp >> 8);
+    legalBoard |= blankBoard & (temp >> 6);
 
     // 右斜め上
+    temp = allSideWatchBoard & (playerBoard << 5);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp << 5);
+    }
+    legalBoard |= blankBoard & (temp << 5);
+
+    // 左斜め上
     temp = allSideWatchBoard & (playerBoard << 7);
     for (int i = 0; i < 3; i++) {
       temp |= allSideWatchBoard & (temp << 7);
     }
     legalBoard |= blankBoard & (temp << 7);
 
-    // 左斜め上
-    temp = allSideWatchBoard & (playerBoard << 9);
-    for (int i = 0; i < 3; i++) {
-      temp |= allSideWatchBoard & (temp << 9);
-    }
-    legalBoard |= blankBoard & (temp << 9);
-
     // 右斜め下
-    temp = allSideWatchBoard & (playerBoard >> 9);
-    for (int i = 0; i < 3; i++) {
-      temp |= allSideWatchBoard & (temp >> 9);
-    }
-    legalBoard |= blankBoard & (temp >> 9);
-    
-    // 左斜め下
     temp = allSideWatchBoard & (playerBoard >> 7);
     for (int i = 0; i < 3; i++) {
       temp |= allSideWatchBoard & (temp >> 7);
     }
     legalBoard |= blankBoard & (temp >> 7);
+    
+    // 左斜め下
+    temp = allSideWatchBoard & (playerBoard >> 5);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp >> 5);
+    }
+    legalBoard |= blankBoard & (temp >> 5);
 
     return legalBoard & ~(blockBoard);
   }
@@ -222,7 +227,7 @@ public class OurBoard implements Board, Cloneable {
     long legalBoard = makeLegalBoard(color);
     var moves = new ArrayList<Integer>();
     for (int k = LENGTH-1; k >= 0; k--) {
-      if ((legalBoard & (1 << k)) == 1) {
+      if (((legalBoard >> k) & 1L) == 1) {
         moves.add(LENGTH-1-k);
       }
     }

@@ -81,9 +81,9 @@ class MyEval2 {
     // int n_w = ((MyBoard) board).count(WHITE); // WHITEの石の数
     int[] w = new int[3]; // w_1~w_5
     if (n_b + n_w <= 12)
-      w = new int[] { 1, -1, 1 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
+      w = new int[] { 1, -20, 10 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
     else if (n_b + n_w <= 24)
-      w = new int[] { 3, 0, 0 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
+      w = new int[] { 3, 1, -2 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
     else
       w = new int[] { 10, +10, -20 }; // 終盤:隅、辺と石の数に注目する
     return w[0] * M[k / SIZE][k % SIZE] * board.get(k).getValue()

@@ -87,8 +87,8 @@ class MyEval2 {
     else
       w = new int[] { 10, +10, -20 }; // 終盤:隅、辺と石の数に注目する
     return w[0] * M[k / SIZE][k % SIZE] * board.get(k).getValue()
-        + w[1] * n_b / SIZE / SIZE
-        + w[2] * n_w / SIZE / SIZE;
+        + w[1] * n_b
+        + w[2] * n_w;
     // return M[k / SIZE][k % SIZE] * board.get(k).getValue();
   }
 }
@@ -101,7 +101,7 @@ public class OurPlayerV2 extends ap24.Player {
   OurBoard board;
 
   public OurPlayerV2(Color color) {
-    this(MY_NAME, color, new MyEval2(), 6);
+    this(MY_NAME, color, new MyEval2(), 10);
   }
 
   public OurPlayerV2(String name, Color color, MyEval2 eval, int depthLimit) {
@@ -145,7 +145,7 @@ public class OurPlayerV2 extends ap24.Player {
 
   float maxSearch(Board board, float alpha, float beta, int depth) {
     if (isTerminal(board, depth))
-      return this.eval.value(board);
+      return this.eval.value2(board);
 
     var moves = board.findLegalMoves(BLACK);
     if (depth >= 2)
@@ -173,7 +173,7 @@ public class OurPlayerV2 extends ap24.Player {
 
   float minSearch(Board board, float alpha, float beta, int depth) {
     if (isTerminal(board, depth))
-      return this.eval.value(board);
+      return this.eval.value2(board);
 
     var moves = board.findLegalMoves(WHITE);
     if (depth >= 2)

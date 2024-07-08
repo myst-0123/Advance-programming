@@ -42,8 +42,9 @@ class MyEval {
   float score(Board board, int k) { // 課題2e 参考:https://bassy84.net/#google_vignette
     int l_b = ((OurBoard) board).findLegalIndexes(BLACK).size(); // BLACKの合法手
     int l_w = ((OurBoard) board).findLegalIndexes(WHITE).size(); // WHITEの合法手
-    int n_b = ((OurBoard) board).count(BLACK); // BLACKの石の数
-    int n_w = ((OurBoard) board).count(WHITE); // WHITEの石の数
+    var cs = ((OurBoard)board).countAll();
+    long n_b = cs.getOrDefault(board, 0L);
+    long n_w = cs.getOrDefault(board, 0L);
 
     int[] w = new int[5]; // w_1~w_5
     if (n_b + n_w <= 12)

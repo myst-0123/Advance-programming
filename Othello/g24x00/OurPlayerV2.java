@@ -58,19 +58,19 @@ class MyEval2 {
 
     int[] w = new int[5]; // w_1~w_5
     if (n_b + n_w <= 12)
-      w = new int[] { 1, +3, -9, -1, 1 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
+      w = new int[] { +1, +30, -60, -1, +2 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
     // w = new int[]{1, 0, 0, 0, 0};
     else if (n_b + n_w <= 24)
-      w = new int[] { 3, +5, -15, 1, -1 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
+      w = new int[] { +3, +30, -60, +2, -1 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
     // w = new int[]{1, 0, 0, 0, 0};
     else
-      w = new int[] { 10, +10, -20, +10, -20 }; // 終盤:隅、辺と石の数に注目する
+      w = new int[] { +10, +20, -40, +10, -20 }; // 終盤:隅、辺と石の数に注目する
     // w = new int[]{1, 0, 0, 0, 0};
     return w[0] * M[k / SIZE][k % SIZE] * board.get(k).getValue()
-        + w[1] * l_b / SIZE / SIZE
-        + w[2] * l_w / SIZE / SIZE
-        + w[3] * n_b / SIZE / SIZE
-        + w[4] * n_w / SIZE / SIZE;
+        + w[1] * l_b
+        + w[2] * l_w
+        + w[3] * n_b
+        + w[4] * n_w;
   }
 
   float score_light(Board board, int k) { // 課題2e 参考:https://bassy84.net/#google_vignette

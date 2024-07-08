@@ -14,7 +14,7 @@ class Competition24 {
     Function<Color, Player[]> builder = (Color color) -> {
       return new Player[] {
         new g24x00.OurPlayer(color),
-        new ap24.league.RandomPlayer(color),
+        new g24x00.OurPlayerV2(color),
       };
     };
 
@@ -24,7 +24,7 @@ class Competition24 {
 
   public static void singleGame(String args[]) {
     var player1 = new g24x00.OurPlayer(BLACK);
-    var player2 = new g24x00.OurPlayer(WHITE);
+    var player2 = new g24x00.OurPlayerV2(WHITE);
     var board = new OfficialBoard();
     var game = new Game(board, player1, player2, TIME_LIMIT_SECONDS);
     game.play();

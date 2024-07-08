@@ -77,7 +77,7 @@ public class OurPlayer extends ap24.Player {
   OurBoard board;
 
   public OurPlayer(Color color) {
-    this(MY_NAME, color, new MyEval(), 2);
+    this(MY_NAME, color, new MyEval(), 7);
   }
 
   public OurPlayer(String name, Color color, MyEval eval, int depthLimit) {

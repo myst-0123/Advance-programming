@@ -10,7 +10,6 @@ import ap24.Move;
 
 public class OurBoardFormatter {
   public static String format(OurBoard board) {
-//  public static String format(OurBoardBit board) {
     var turn = board.getTurn();
     var move = board.getMove();
     var blacks = board.findNoPassLegalIndexes(BLACK);

@@ -20,6 +20,10 @@ public class OurBoard implements Board, Cloneable {
   Color board[];
   Move move = Move.ofPass(NONE);
 
+  long blackBoard = 0;
+  long whiteBoard = 0;
+  long blockBoard = 0;
+
   public OurBoard() {
     this.board = Stream.generate(() -> NONE).limit(LENGTH).toArray(Color[]::new);
     init();
@@ -121,6 +125,111 @@ public class OurBoard implements Board, Cloneable {
     return moves;
   }
 
+  void makeBitBoard() {
+    long mask = 0x800000000L;
+    for (int i = 0; i < LENGTH; i++) {
+      switch(this.board[i]) {
+        case BLACK:
+          blackBoard |= mask >> i;
+          break;
+        case WHITE:
+          whiteBoard |= mask >> i;
+          break;
+        case BLOCK:
+          blockBoard |= mask >> i;
+          break;
+        default:
+          break;
+      }
+    }
+  }
+
+  long makeLegalBoard(Color color) {
+    long playerBoard;
+    long opponentBoard;
+    long horizontalWatchBoard; // 左右端の番人
+    long verticalWatchBoard; // 上下端の番人
+    long allSideWatchBoard; //4辺の番人
+    long blankBoard = ~(blackBoard | whiteBoard);
+    long legalBoard;
+
+    switch(color) {
+      case BLACK:
+        playerBoard = blackBoard;
+        opponentBoard = whiteBoard;
+        break;
+      case WHITE:
+        playerBoard = whiteBoard;
+        opponentBoard = blackBoard;  
+        break;
+      default:
+        playerBoard = 0;
+        opponentBoard = 0;
+    }
+
+    horizontalWatchBoard = opponentBoard & 0x79e79e79eL;
+    verticalWatchBoard = opponentBoard & 0x03fffffc0L;
+    allSideWatchBoard = opponentBoard & 0x01e79e780L;
+
+    // 左
+    long temp = horizontalWatchBoard & (playerBoard << 1);
+    for (int i = 0; i < 3; i++) {
+      temp |= horizontalWatchBoard & (temp << 1);
+    }
+    legalBoard = blankBoard & (temp << 1);
+
+    // 右
+    temp = horizontalWatchBoard & (playerBoard >> 1);
+    for (int i = 0; i < 3; i++) {
+      temp |= horizontalWatchBoard & (temp >> 1);
+    }
+    legalBoard |= blankBoard & (temp >> 1);
+
+    // 上
+    temp = verticalWatchBoard & (playerBoard << 6);
+    for (int i = 0; i < 3; i++) {
+      temp |= verticalWatchBoard & (temp << 6);
+    }
+    legalBoard |= blankBoard & (temp << 6);
+
+    // 下
+    temp = verticalWatchBoard & (playerBoard >> 6);
+    for (int i = 0; i < 3; i++) {
+      temp |= verticalWatchBoard & (temp >> 6);
+    }
+    legalBoard |= blankBoard & (temp >> 6);
+
+    // 右斜め上
+    temp = allSideWatchBoard & (playerBoard << 5);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp << 5);
+    }
+    legalBoard |= blankBoard & (temp << 5);
+
+    // 左斜め上
+    temp = allSideWatchBoard & (playerBoard << 7);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp << 7);
+    }
+    legalBoard |= blankBoard & (temp << 7);
+
+    // 右斜め下
+    temp = allSideWatchBoard & (playerBoard >> 7);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp >> 7);
+    }
+    legalBoard |= blankBoard & (temp >> 7);
+    
+    // 左斜め下
+    temp = allSideWatchBoard & (playerBoard >> 5);
+    for (int i = 0; i < 3; i++) {
+      temp |= allSideWatchBoard & (temp >> 5);
+    }
+    legalBoard |= blankBoard & (temp >> 5);
+
+    return legalBoard & ~(blockBoard);
+  }
+
   List<Integer> findNoPassLegalIndexes(Color color) {
     var moves = new ArrayList<Integer>();
     for (int k = 0; k < LENGTH; k++) {
@@ -135,6 +244,18 @@ public class OurBoard implements Board, Cloneable {
     }
     return moves;
   }
+
+  // List<Integer> findNoPassLegalIndexes(Color color) {
+  //   makeBitBoard();
+  //   long legalBoard = makeLegalBoard(color);
+  //   var moves = new ArrayList<Integer>();
+  //   for (int k = LENGTH-1; k >= 0; k--) {
+  //     if (((legalBoard >> k) & 1L) == 1) {
+  //       moves.add(LENGTH-1-k);
+  //     }
+  //   }
+  //   return moves;
+  // }
 
   List<List<Integer>> lines(int k) {
     var lines = new ArrayList<List<Integer>>();

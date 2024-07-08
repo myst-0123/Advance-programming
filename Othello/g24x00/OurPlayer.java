@@ -13,14 +13,22 @@ import ap24.Color;
 import ap24.Move;
 
 class MyEval {
+  // static float[][] M = {
+  //     { 10,  10, 10, 10,  10,  10},
+  //     { 10,  -5,  1,  1,  -5,  10},
+  //     { 10,   1,  1,  1,   1,  10},
+  //     { 10,   1,  1,  1,   1,  10},
+  //     { 10,  -5,  1,  1,  -5,  10},
+  //     { 10,  10, 10, 10,  10,  10},
+  // };
   static float[][] M = {
-      { 10,  10, 10, 10,  10,  10},
-      { 10,  -5,  1,  1,  -5,  10},
-      { 10,   1,  1,  1,   1,  10},
-      { 10,   1,  1,  1,   1,  10},
-      { 10,  -5,  1,  1,  -5,  10},
-      { 10,  10, 10, 10,  10,  10},
-  };
+    { 20,  -5, 10, 10,  -5,  20},
+    { -5,  -10,  1,  1,  -10,  -5},
+    { 10,   1,  1,  1,   1,  10},
+    { 10,   1,  1,  1,   1,  10},
+    { -5,  -10,  1,  1,  -10,  -5},
+    { 20,  -5, 10, 10,  -5,  20},
+};
 
   public float value(Board board) {
     if (board.isEnd()) return 1000000 * board.score();
@@ -34,19 +42,25 @@ class MyEval {
   float score(Board board, int k) { // 課題2e 参考:https://bassy84.net/#google_vignette
     int l_b = ((OurBoard) board).findLegalIndexes(BLACK).size(); // BLACKの合法手
     int l_w = ((OurBoard) board).findLegalIndexes(WHITE).size(); // WHITEの合法手
-    int n_b = ((OurBoard) board).count(BLACK); // BLACKの石の数
-    int n_w = ((OurBoard) board).count(WHITE); // WHITEの石の数
+    //int l_b = 0;
+    //int l_w = 0;
+
+    var cs = ((OurBoard)board).countAll();
+    //int n_b = ((OurBoard) board).count(BLACK); // BLACKの石の数
+    //int n_w = ((OurBoard) board).count(WHITE); // WHITEの石の数
+    long n_b = cs.getOrDefault(BLACK, 0L);
+    long n_w = cs.getOrDefault(WHITE, 0L);
 
     int[] w = new int[5]; // w_1~w_5
     if (n_b + n_w <= 12)
-        w = new int[] { 1, +30, -60, +2, -1 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
-        //w = new int[]{1, 0, 0, 0, 0};
+        w = new int[] { 1, +30, -60, -1, +2 }; // 序盤:石を多く取らないようにする≒合法手の数を重視する
+        //w = new int[]{+1, 0, 0, -1, +1};
     else if (n_b + n_w <= 24)
-        w = new int[] { 3, +30, -60, +5, -5 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
-        //w = new int[]{1, 0, 0, 0, 0};
+        w = new int[] { 3, +30, -60, +2, -1 }; // 中盤:合法手の数を重視しつつ、隅や辺にも注意する 石の数にも気をつける
+        //w = new int[]{+3, 0, 0, 0, 0};
     else
         w = new int[] { 10, +20, -40, +10, -20 }; // 終盤:隅、辺と石の数に注目する
-        //w = new int[]{1, 0, 0, 0, 0};
+        //w = new int[]{+10, 0, 0, +10, -20};
     return w[0] * M[k / SIZE][k % SIZE] * board.get(k).getValue()
             + w[1] * l_b
             + w[2] * l_w
@@ -63,7 +77,7 @@ public class OurPlayer extends ap24.Player {
   OurBoard board;
 
   public OurPlayer(Color color) {
-    this(MY_NAME, color, new MyEval(), 6);
+    this(MY_NAME, color, new MyEval(), 2);
   }
 
   public OurPlayer(String name, Color color, MyEval eval, int depthLimit) {

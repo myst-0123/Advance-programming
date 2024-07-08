@@ -230,32 +230,32 @@ public class OurBoard implements Board, Cloneable {
     return legalBoard & ~(blockBoard);
   }
 
-  List<Integer> findNoPassLegalIndexes(Color color) {
-    var moves = new ArrayList<Integer>();
-    for (int k = 0; k < LENGTH; k++) {
-      var c = this.board[k];
-      if (c != NONE)
-        continue;
-      for (var line : lines(k)) {
-        var outflanking = outflanked(line, color);
-        if (outflanking.size() > 0 && !moves.contains(k))
-          moves.add(k);
-      }
-    }
-    return moves;
-  }
-
   // List<Integer> findNoPassLegalIndexes(Color color) {
-  //   makeBitBoard();
-  //   long legalBoard = makeLegalBoard(color);
   //   var moves = new ArrayList<Integer>();
-  //   for (int k = LENGTH-1; k >= 0; k--) {
-  //     if (((legalBoard >> k) & 1L) == 1) {
-  //       moves.add(LENGTH-1-k);
+  //   for (int k = 0; k < LENGTH; k++) {
+  //     var c = this.board[k];
+  //     if (c != NONE)
+  //       continue;
+  //     for (var line : lines(k)) {
+  //       var outflanking = outflanked(line, color);
+  //       if (outflanking.size() > 0 && !moves.contains(k))
+  //         moves.add(k);
   //     }
   //   }
   //   return moves;
   // }
+
+  List<Integer> findNoPassLegalIndexes(Color color) {
+    makeBitBoard();
+    long legalBoard = makeLegalBoard(color);
+    var moves = new ArrayList<Integer>();
+    for (int k = LENGTH-1; k >= 0; k--) {
+      if (((legalBoard >> k) & 1L) == 1) {
+        moves.add(LENGTH-1-k);
+      }
+    }
+    return moves;
+  }
 
   List<List<Integer>> lines(int k) {
     var lines = new ArrayList<List<Integer>>();

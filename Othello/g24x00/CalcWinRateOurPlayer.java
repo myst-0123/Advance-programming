@@ -9,7 +9,7 @@ public class CalcWinRateOurPlayer {
         int winNumBlack = 0;
         int winNumWhite = 0;
         for (int i = 0; i < 100; i++) {
-            var player1 =  new g24x00.OurPlayer(BLACK);
+            var player1 =  new g24x00.OurPlayerV2(BLACK);
             var player2 =  new RandomPlayer(WHITE);
             var board = new OurBoard();
             var game = new Game(board, player1, player2, 60);
@@ -19,7 +19,7 @@ public class CalcWinRateOurPlayer {
         }
 
         for (int i = 0; i < 100; i++) {
-            var player1 =  new OurPlayer(WHITE);
+            var player1 =  new OurPlayerV2(WHITE);
             var player2 =  new RandomPlayer(BLACK);
             var board = new OurBoard();
             var game = new Game(board, player2, player1, 60);

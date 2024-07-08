@@ -77,7 +77,7 @@ public class OurPlayer extends ap24.Player {
   OurBoard board;
 
   public OurPlayer(Color color) {
-    this(MY_NAME, color, new MyEval(), 7);
+    this(MY_NAME, color, new MyEval(), 8);
   }
 
   public OurPlayer(String name, Color color, MyEval eval, int depthLimit) {
@@ -121,7 +121,7 @@ public class OurPlayer extends ap24.Player {
     if (isTerminal(board, depth)) return this.eval.value(board);
 
     var moves = board.findLegalMoves(BLACK);
-    moves = order(moves);
+    //moves = order(moves);
 
     if (depth == 0)
       this.move = moves.get(0);
@@ -147,7 +147,7 @@ public class OurPlayer extends ap24.Player {
     if (isTerminal(board, depth)) return this.eval.value(board);
 
     var moves = board.findLegalMoves(WHITE);
-    moves = order(moves);
+    //moves = order(moves);
 
     for (var move: moves) {
       var newBoard = board.placed(move);

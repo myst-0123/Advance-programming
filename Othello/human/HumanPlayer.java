@@ -1,5 +1,7 @@
 package human;
 
+import java.util.*;
+
 import ap24.Board;
 import ap24.Color;
 import ap24.Move;
@@ -10,14 +12,15 @@ public class HumanPlayer extends Player {
 
     // コンストラクタ
     public HumanPlayer(Color color) {
-        super("H", color);
+        super("Human", color);
     }
 
     public Move think(Board board) {
         int num = -1;
         var moves = board.findLegalMoves(getColor());
+        if(moves.size() == 0) return Move.ofPass(getColor());
 
-        System.out.println(String.format("手を選択してください (0～%d)\n", moves.size()));
+        System.out.println(String.format("手を選択してください (0～%d)\n", moves.size() - 1));
 
         // 入力をintに変換
         String str = sc.next();
